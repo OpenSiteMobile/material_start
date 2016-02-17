@@ -41,9 +41,17 @@
      * hide or Show the 'left' sideNav area
      */
     function toggleUsersList() {
-      var pending = $mdBottomSheet.hide() || $q.when(true);
+      $log.debug('UserController.js - toggleUsersList -> called.');
+
+      var pending = $mdBottomSheet.hide();
+
+      if (!pending) {
+        pending = $q.when(true);
+        pending.$$state.name += ':app_when_toggleUsersList';
+      }
 
       pending.then(function(){
+        $log.debug('UserController.js - toggleUsersList -> then called.');
         $mdSidenav('left').toggle();
       });
     }
@@ -53,6 +61,8 @@
      * @param menuId
      */
     function selectUser ( user ) {
+      $log.debug('UserController.js - selectUser -> called.');
+  
       self.selected = angular.isNumber(user) ? $scope.users[user] : user;
       self.toggleList();
     }
@@ -63,21 +73,14 @@
     function showContactOptions($event) {
         var user = self.selected;
 
-        return $mdBottomSheet.show({
-          parent: angular.element(document.getElementById('content')),
-          templateUrl: './app/src/users/view/contactSheet.html',
-          controller: [ '$mdBottomSheet', ContactPanelController],
-          controllerAs: "cp",
-          bindToController : true,
-          targetEvent: $event
-        }).then(function(clickedItem) {
-          clickedItem && $log.debug( clickedItem.name + ' clicked!');
-        });
+        $log.debug('UserController.js - showContactOptions -> called.');
 
         /**
          * Bottom Sheet controller for the Avatar Actions
          */
         function ContactPanelController( $mdBottomSheet ) {
+          $log.debug('UserController.js - ContactPanelController -> called.');
+
           this.user = user;
           this.actions = [
             { name: 'Phone'       , icon: 'phone'       , icon_url: './app/assets/svg/phone.svg'},
@@ -86,9 +89,21 @@
             { name: 'Hangout'     , icon: 'hangouts'    , icon_url: './app/assets/svg/hangouts.svg'}
           ];
           this.submitContact = function(action) {
+            $log.debug('UserController.js - ContactPanelController - submitContact -> called.');
             $mdBottomSheet.hide(action);
           };
         }
+
+        return $mdBottomSheet.show({
+          parent: angular.element(document.getElementById('content')),
+          templateUrl: './app/src/users/view/contactSheet.html',
+          controller: [ '$mdBottomSheet', ContactPanelController],
+          controllerAs: "cp",
+          bindToController : true,
+          targetEvent: $event
+        }).then(function(clickedItem) {
+          clickedItem && $log.debug('UserController.js - ContactPanelController -> ' + clickedItem.name + ' clicked!');
+        });
     }
 
   }

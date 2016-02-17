@@ -10,7 +10,7 @@
     <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no" />
 
     <link rel='stylesheet' href='http://fonts.googleapis.com/css?family=Roboto:400,500,700,400italic'>
-    <link rel="stylesheet" href="../mobilesiteos/ng/material/css/v102.uc.css" />
+    <link rel="stylesheet" href="../mobilesiteos/ng/material/css/v105.uc.css" />
     <link rel="stylesheet" href="./app/assets/app.css" />
 
     <style type="text/css">
@@ -27,7 +27,6 @@
             display: none !important;
         }
 
-        /*
 		ng\:form {
 			display: block;
 		}
@@ -43,12 +42,11 @@
 		.ng-anchor{
 			position:absolute;
 		}
-		*/
     </style>
 
 	<link rel='shortcut icon' href='../mobilesiteos/images/osm.ico' />
 
-	<script src="../mobilesiteos/msos/base.uc.js"></script>
+	<script src="../mobilesiteos/msos/base.min.js"></script>
 	<script src="./config.js"></script>
 </head>
 
@@ -78,10 +76,14 @@
             <md-button class="menu" hide-gt-sm ng-click="ul.toggleList()" aria-label="Show User List">
                 <md-icon md-svg-icon="menu"></md-icon>
             </md-button>
-            <h1>Angular Material - Starter App</h1>
+            <h1>MSOS AngularJS Material - Starter App</h1>
         </md-toolbar>
 
         <md-content flex id="content">
+            <h2>Material Design Starter App Using MobileSiteOS AngularJS and Modules</h2>
+            <h3>
+                <a href="./std_md.html">Std AngularJS</a> :: <a href="../angularjs">Demo Index</a>
+            </h3>
             <md-icon md-svg-icon="{{ul.selected.avatar}}" class="avatar"></md-icon>
             <h2>{{ul.selected.name}}</h2>
             <p>{{ul.selected.content}}</p>
@@ -101,7 +103,7 @@
             "use strict";
 
             // Prepare the 'users' module for subsequent registration of controllers and delegates (from Users.js)
-            angular.module('users', [ 'ngMaterial' ]);
+            angular.module('users', ['ngMaterial']);
 
             angular
                 .module('users')
@@ -146,10 +148,17 @@
                      * hide or Show the 'left' sideNav area
                      */
                     function toggleUsersList() {
-                        var pending = $mdBottomSheet.hide() || $q.when($q.defer('when_toggleUsersList'), true);
-        
+                        console.log('index.html - toggleUsersList -> called.');
+
+                        var pending = $mdBottomSheet.hide();
+
+                        if (!pending) {
+                            pending = $q.when($q.defer('app_when_toggleUsersList'), true);
+                        }
+
                         pending.then(
                             function () {
+                                console.log('index.html - toggleUsersList -> then called.');
                                 $mdSidenav('left').toggle();
                             }
                         );
@@ -160,6 +169,8 @@
                      * @param menuId
                      */
                     function selectUser(user) {
+                        console.log('index.html - selectUser -> called.');
+
                         self.selected = angular.isNumber(user) ? $scope.users[user] : user;
                         self.toggleList();
                     }
@@ -169,6 +180,26 @@
                      */
                     function showContactOptions($event) {
                         var user = self.selected;
+
+                        $log.debug('index.html - showContactOptions -> called.');
+                        /**
+                         * Bottom Sheet controller for the Avatar Actions
+                         */
+                        function ContactPanelController($mdBottomSheet) {
+                            $log.debug('index.html - ContactPanelController -> called.');
+
+                            this.user = user;
+                            this.actions = [
+                                { name: 'Phone'       , icon: 'phone'       , icon_url: './app/assets/svg/phone.svg'},
+                                { name: 'Twitter'     , icon: 'twitter'     , icon_url: './app/assets/svg/twitter.svg'},
+                                { name: 'Google+'     , icon: 'google_plus' , icon_url: './app/assets/svg/google_plus.svg'},
+                                { name: 'Hangout'     , icon: 'hangouts'    , icon_url: './app/assets/svg/hangouts.svg'}
+                            ];
+                            this.submitContact = function (action) {
+                                $log.debug('index.html - ContactPanelController - submitContact -> called.');
+                                $mdBottomSheet.hide(action);
+                            };
+                        }
 
                         return $mdBottomSheet.show(
                             {
@@ -181,25 +212,9 @@
                             }
                         ).then(
                             function (clickedItem) {
-                                clickedItem && $log.debug( clickedItem.name + ' clicked!');
+                                clickedItem && $log.debug('index.html - ContactPanelController -> ' + clickedItem.name + ' clicked!');
                             }
                         );
-
-                        /**
-                         * Bottom Sheet controller for the Avatar Actions
-                         */
-                        function ContactPanelController($mdBottomSheet) {
-                            this.user = user;
-                            this.actions = [
-                                { name: 'Phone'       , icon: 'phone'       , icon_url: './app/assets/svg/phone.svg'},
-                                { name: 'Twitter'     , icon: 'twitter'     , icon_url: './app/assets/svg/twitter.svg'},
-                                { name: 'Google+'     , icon: 'google_plus' , icon_url: './app/assets/svg/google_plus.svg'},
-                                { name: 'Hangout'     , icon: 'hangouts'    , icon_url: './app/assets/svg/hangouts.svg'}
-                            ];
-                            this.submitContact = function (action) {
-                                $mdBottomSheet.hide(action);
-                            };
-                        }
                     }
                 }
 
@@ -256,7 +271,7 @@
                     return {
                         loadAllUsers: function () {
                             // Simulate async nature of real remote calls
-                            return $q.when($q.defer('when_loadAllUsers'), users);
+                            return $q.when($q.defer('app_when_loadAllUsers'), users);
                         }
                     };
                 }
@@ -287,6 +302,8 @@
 
         msos.onload_func_done.push(
             function () {
+                "use strict";
+
                 angular.bootstrap('body', ['starterApp']);
             }
         );

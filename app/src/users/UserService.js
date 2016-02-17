@@ -50,7 +50,10 @@
     return {
       loadAllUsers : function() {
         // Simulate async nature of real remote calls
-        return $q.when(users);
+        var q_when = $q.when(users);
+
+        q_when.$$state.name += ':app_when_loadAllUsers';
+        return q_when;
       }
     };
   }
