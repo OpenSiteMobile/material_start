@@ -1,48 +1,98 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html>
 <head>
-    <title>Angular Material - Starter App</title>
+
+    <title>Ng Material Design - Starter App</title>
 
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="description" content="">
     <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no" />
 
-    <link rel='stylesheet' href='http://fonts.googleapis.com/css?family=Roboto:400,500,700,400italic'>
-    <link rel="stylesheet" href="../mobilesiteos/ng/material/css/v105.uc.css" />
-    <link rel="stylesheet" href="./app/assets/app.css" />
-
     <style type="text/css">
-        /**
-         * Hide when Angular is not yet loaded and initialized
-         */
-        
+        /* Std AngularJS CSS: Load in page so cloaking starts immediately */
         [ng\:cloak],
-        [ng-cloak],
-        [data-ng-cloak],
-        [x-ng-cloak],
-        .ng-cloak,
-        .x-ng-cloak {
-            display: none !important;
-        }
-
+		[ng-cloak],
+		[data-ng-cloak],
+		[x-ng-cloak],
+		.ng-cloak,
+		.x-ng-cloak,
+		.ng-hide:not(.ng-hide-animate) {
+			display: none !important;
+		}
 		ng\:form {
 			display: block;
 		}
-
         .ng-cloak {
             opacity: 0;
         }
-
 		.ng-animate-shim{
 			visibility:hidden;
 		}
-
 		.ng-anchor{
 			position:absolute;
 		}
+
+		/* Std MSOS CSS: notify popup */
+		#notify_container {
+			position: absolute;
+			width: 18em;
+			z-index: 9999;
+		}
+		.notify {
+			background-color: #111;
+			border-radius: 0.4em;
+			margin-bottom: 1em;
+			opacity: 0.9;
+			padding: 1.2em;
+		}
+		.notify:hover {
+			opacity: 1;
+		}
+		.notify_title {
+			font-weight: bold;
+		}
+		.notify_title,
+		.notify_msg {
+			color: #FFF;
+			font-size: larger;
+			margin-bottom: 0.4em;
+			padding: 0 0.4em;
+		}
+		.notify > i {
+			float: left;
+		}
+		.notify_display > button {
+			float: right;
+		}
+		.notify > i.info {
+			color: blue;
+		}
+		.notify > i.warning {
+			color: yellow;
+		}
+		.notify > i.error {
+			color: red;
+		}
+		.notify > i.success {
+			color: green;
+		}
+		.notify > i.loading {
+			color: orange;
+		}
+		.notify {
+			-webkit-box-shadow:0 0 12px #999;
+					box-shadow:0 0 12px #999;
+		}
+		.notify:hover {
+			-webkit-box-shadow:0 0 12px #000;
+					box-shadow:0 0 12px #000;
+		}
     </style>
+
+    <link rel='stylesheet' href='http://fonts.googleapis.com/css?family=Roboto:400,500,700,400italic'>
+    <link rel="stylesheet" href="../mobilesiteos/ng/material/css/v105.uc.css" />
+    <link rel="stylesheet" href="./app.css" />
 
 	<link rel='shortcut icon' href='../mobilesiteos/images/osm.ico' />
 
@@ -76,11 +126,11 @@
             <md-button class="menu" hide-gt-sm ng-click="ul.toggleList()" aria-label="Show User List">
                 <md-icon md-svg-icon="menu"></md-icon>
             </md-button>
-            <h1>MSOS AngularJS Material - Starter App</h1>
+            <h2>NgMomentum - Ng Material Design - Starter App</h2>
         </md-toolbar>
 
         <md-content flex id="content">
-            <h2>Material Design Starter App Using MobileSiteOS AngularJS and Modules</h2>
+            <h2>Material Design Starter App Using NgMomentum version of AngularJS</h2>
             <h3>
                 <a href="./std_md.html">Std AngularJS</a> :: <a href="../angularjs">Demo Index</a>
             </h3>
@@ -190,10 +240,10 @@
 
                             this.user = user;
                             this.actions = [
-                                { name: 'Phone'       , icon: 'phone'       , icon_url: './app/assets/svg/phone.svg'},
-                                { name: 'Twitter'     , icon: 'twitter'     , icon_url: './app/assets/svg/twitter.svg'},
-                                { name: 'Google+'     , icon: 'google_plus' , icon_url: './app/assets/svg/google_plus.svg'},
-                                { name: 'Hangout'     , icon: 'hangouts'    , icon_url: './app/assets/svg/hangouts.svg'}
+                                { name: 'Phone'       , icon: 'phone'       , icon_url: './svg/phone.svg'},
+                                { name: 'Twitter'     , icon: 'twitter'     , icon_url: './svg/twitter.svg'},
+                                { name: 'Google+'     , icon: 'google_plus' , icon_url: './svg/google_plus.svg'},
+                                { name: 'Hangout'     , icon: 'hangouts'    , icon_url: './svg/hangouts.svg'}
                             ];
                             this.submitContact = function (action) {
                                 $log.debug('index.html - ContactPanelController - submitContact -> called.');
@@ -204,7 +254,7 @@
                         return $mdBottomSheet.show(
                             {
                                 parent: angular.element(document.getElementById('content')),
-                                templateUrl: './app/src/users/view/contactSheet.html',
+                                templateUrl: './contactSheet.html',
                                 controller: [ '$mdBottomSheet', ContactPanelController],
                                 controllerAs: "cp",
                                 bindToController : true,
@@ -218,12 +268,13 @@
                     }
                 }
 
-                // From UserService.js
-                angular.module('users')
-                    .service(
-                        'userService',
-                        ['$q', UserService]
-                    );
+				// From UserService.js
+				angular.module(
+					'users'
+				).service(
+					'userService',
+					['$q', UserService]
+				);
 
                 /**
                  * Users DataService
@@ -233,7 +284,9 @@
                  * @returns {{loadAll: Function}}
                  * @constructor
                  */
-                function UserService ($q) {
+				function UserService ($q) {
+					"use strict";
+
                     var users = [
                         {
                           name: 'Lia Lugo',
@@ -278,25 +331,25 @@
 
                 // Start the app
                 angular.module(
-                        'starterApp',
-                        ['ngMaterial', 'users']
-                    ).config(
-                        function ($mdThemingProvider, $mdIconProvider) {
+                    'starterApp',
+                    ['ngMaterial', 'users']
+                ).config(
+					['$mdThemingProvider', '$mdIconProvider', function ($mdThemingProvider, $mdIconProvider) {
+						"use strict";
 
-                            $mdIconProvider
-                                .defaultIconSet("./app/assets/svg/avatars.svg", 128)
-                                .icon("menu",       "./app/assets/svg/menu.svg", 24)
-                                .icon("share",      "./app/assets/svg/share.svg", 24)
-                                .icon("google_plus", "./app/assets/svg/google_plus.svg", 512)
-                                .icon("hangouts",   "./app/assets/svg/hangouts.svg", 512)
-                                .icon("twitter",    "./app/assets/svg/twitter.svg", 512)
-                                .icon("phone",      "./app/assets/svg/phone.svg", 512);
-    
-                            $mdThemingProvider.theme('default')
-                                .primaryPalette('brown')
-                                .accentPalette('red');
-                        }
-                    );
+						$mdThemingProvider.theme('default')
+							.primaryPalette('brown')
+							.accentPalette('red');
+
+						$mdIconProvider.defaultIconSet("./svg/avatars.svg", 128)
+							.icon("menu",			"./svg/menu.svg", 24)
+							.icon("share",			"./svg/share.svg", 24)
+							.icon("google_plus",	"./svg/google_plus.svg", 512)
+							.icon("hangouts",		"./svg/hangouts.svg", 512)
+							.icon("twitter",		"./svg/twitter.svg", 512)
+							.icon("phone",			"./svg/phone.svg", 512);
+					}]
+                );
             }
         );
 
@@ -311,5 +364,4 @@
     </script>
 
 </body>
-
 </html>
