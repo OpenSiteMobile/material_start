@@ -11,7 +11,7 @@
 
     <link rel='stylesheet' href='http://fonts.googleapis.com/css?family=Roboto:400,500,700,400italic'>
     <link rel="stylesheet" href="../mobilesiteos/ng/material/css/v105.uc.css" />
-    <link rel="stylesheet" href="./app.css" />
+    <link rel="stylesheet" href="./specific.css" />
 
     <style type="text/css">
         /**
@@ -159,15 +159,15 @@
                     $log.debug('index.html - ContactPanelController -> called.');
 
                     this.user = user;
-                    this.actions = [
+                    this.items = [
                         { name: 'Phone'       , icon: 'phone'       , icon_url: './svg/phone.svg'},
                         { name: 'Twitter'     , icon: 'twitter'     , icon_url: './svg/twitter.svg'},
                         { name: 'Google+'     , icon: 'google_plus' , icon_url: './svg/google_plus.svg'},
                         { name: 'Hangout'     , icon: 'hangouts'    , icon_url: './svg/hangouts.svg'}
                     ];
-                    this.submitContact = function (action) {
+                    this.submitContact = function (item) {
                         $log.debug('index.html - ContactPanelController - submitContact -> called.');
-                        $mdBottomSheet.hide(action);
+                        $mdBottomSheet.hide(item);
                     };
                 }
 
