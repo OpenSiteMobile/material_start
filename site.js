@@ -1,9 +1,9 @@
 // Copyright Notice:
 //					site.js
-//			Copyright©2012-2015 - OpenSiteMobile
+//			Copyright©2012-2017 - OpenSiteMobile
 //				All rights reserved
 // ==========================================================================
-//			http://opensite.mobi
+//			http://opensitemobile.com and http://ngmomentum.com
 // ==========================================================================
 // Contact Information:
 //			Author: Dwight Vietzke
@@ -20,8 +20,7 @@
 	OpenSiteMobile MobileSiteOS site specific code:
 
 	    Google Analytics,
-	    AddThis,
-	    other Social site calls, etc.
+	    Social site calls, etc.
 	
 	Plus:
 
@@ -30,11 +29,7 @@
 
 /*global
 	msos:false,
-	Modernizr:false,
-	jQuery: false,
-	_: false,
-	addthis: false,
-	addthis_config: false
+	jQuery: false
 */
 
 msos.site = {};
@@ -96,55 +91,6 @@ msos.site.google_analytics = function () {
 
 
 // --------------------------
-// Social Website Code
-// --------------------------
-
-msos.site.addthis_share = function () {
-	"use strict";
-
-	// Use AddThis provided language output
-	msos.config.google.no_translate.by_id.push('#social_ties');
-
-	var html_out =
-			'<div class="addthis_toolbox addthis_default_style ">' +
-				'<a class="addthis_button_google_plusone_share"></a>' +
-				'<a class="addthis_button_preferred_1"></a>' +
-				'<a class="addthis_button_preferred_2"></a>' +
-				'<a class="addthis_button_preferred_3"></a>' +
-				'<a class="addthis_button_compact"></a>' +
-				'<a class="addthis_counter addthis_bubble_style"></a>' +
-			'</div>',
-		run_addthis = function () {
-			var atl = new msos.loader();
-
-			atl.add_resource_onload.push(
-				function () {
-					if (window.addthis) {
-						setTimeout(addthis.init, 250);		// Give AddThis css a chance to load completely
-					} else {
-						msos.console.warn('msos.site.addthis_share -> failed to load!');
-					}
-				}
-			);
-
-			addthis_config.ui_language = msos.config.locale.replace('_', '-');
-
-			atl.load(
-				'addthis_share_api',
-				'//s7.addthis.com/js/300/addthis_widget.js#pubid=' + msos.config.addthis_pubid + '&async=1&domready=1',
-				'js'
-			);
-		};
-
-	// Add our 'AddThis' html
-	jQuery('#social_ties').html(html_out);
-
-	// Run this after everything else is done (non-critical)
-	msos.onload_func_post.push(run_addthis);
-};
-
-
-// --------------------------
 // Site Specific Code
 // --------------------------
 
@@ -176,13 +122,6 @@ msos.site.auto_init = function () {
 
 	// Add MSOS console output
 	if (cfg.console)		{ req("msos.pyromane"); }
-    // Based on page elements and configuration -> run functions or add modules
-    if (cfg.run_ads
-	 && bdwidth > 150
-	 && jQuery('#rotate_marquee').length === 1)	{ req("msos.google.ad"); }
-    if (cfg.run_social
-	 && bdwidth > 150
-     && jQuery('#social_ties').length)			{ msos.site.addthis_share(); }
 
 	// Or based on configuration settings
 	if (cfg.run_analytics && bdwidth > 150)		{ msos.site.google_analytics(); }

@@ -1,23 +1,22 @@
 // Copyright Notice:
 //					config.js
-//			Copyright©2012-2015 - OpenSiteMobile
+//			Copyright©2012-2017 - OpenSiteMobile
 //				All rights reserved
 // ==========================================================================
-//			http://opensite.mobi
+//			http://opensitemobile.com and http://ngmomentum.com
 // ==========================================================================
 // Contact Information:
 //			Author: Dwight Vietzke
 //			Email:  dwight_vietzke@yahoo.com
 
 /*
-	OpenSiteMobile - AngularJS demo pages configuration file
+	OpenSiteMobile - Material Design demo pages configuration file
 */
 
 /*global
 	msos: false,
     _gaq: true,
-    ___gcfg: true,
-    addthis_config: true
+    ___gcfg: true
 */
 
 msos.console.info('config -> start, (/material_start/config.js file).');
@@ -58,28 +57,28 @@ if (msos.config.debug_script) {
 
 	// Debug full scripts (line no's mean something)
     msos.deferred_scripts = [
-		msos.resource_url('jquery', 'v310_msos.uc.js'),
+		msos.resource_url('jquery', 'v311_msos.uc.js'),
 		msos.resource_url('jquery', 'ui/v1120.uc.js'),		// All UI Core + Draggable Interaction + Effects Core
 		msos.resource_url('ng', 'v158_msos.uc.js'),
 		msos.resource_url('ng', 'animate/v148_msos.uc.js'),
 		msos.resource_url('ng', 'aria/v150.uc.js'),
 		msos.resource_url('ng', 'material/v105_msos.uc.js'),
-		'site.js',											// Common installation specific setup code (which needs jQuery, underscore.js, etc.)
-		msos.resource_url('msos', 'v15518.uc.js')
+		msos.resource_url('','site.js'),										// Common installation specific setup code (which needs jQuery, underscore.js, etc.)
+		msos.resource_url('msos', 'v1746.uc.js')
 	];
 
 } else {
 
 	// Standard site provided (including ext. bundles) scripts
     msos.deferred_scripts = [
-		msos.resource_url('jquery', 'v310_msos.min.js'),
+		msos.resource_url('jquery', 'v311_msos.min.js'),
 		msos.resource_url('jquery', 'ui/v1120.min.js'),			// All UI Core + Draggable Interaction + Effects Core
 		msos.resource_url('ng', 'v158_msos.min.js'),
 		msos.resource_url('ng', 'animate/v148_msos.min.js'),
 		msos.resource_url('ng', 'aria/v150.min.js'),
 		msos.resource_url('ng', 'material/v105_msos.min.js'),
-		'site.js',
-		msos.resource_url('msos', 'v15518.min.js')
+		msos.resource_url('','site.js'),
+		msos.resource_url('msos', 'v1746.min.js')
 	];
 }
 
@@ -90,16 +89,7 @@ if (msos.config.debug_script) {
 
 // Replace with your site specific Google and other variables
 var _gaq = [],
-    ___gcfg = {},
-	addthis_config = {							// AddThis (addthis.com) configuration object
-		username: 'MobileSiteOS',
-		data_ga_property: 'UA-24170958-1',
-		ui_language: msos.default_locale,
-		ui_click: true
-	};
-
-// AddThis Social Sharing
-msos.config.addthis_pubid = 'ra-515ca32f73d2b2ae';
+    ___gcfg = {};
 
 // Google Analytics
 _gaq.push(['_setAccount', 'UA-24170958-1']);
@@ -110,7 +100,7 @@ msos.config.google.analytics_domain = 'opensitemobile.com';
 // Add your Google Web Page Translator Widget ID here.
 msos.config.google.translate_id = '7aa52b36fcd8fcb6-07fbdbdc6a976e62-g7261f6c2de6e277c-d';
 msos.config.google.no_translate = {
-	by_id: ['#rotate_marquee', '#header', '#footer', '#pyromane', '#locale', '#culture', '#calendar'],
+	by_id: ['#marquee', '#header', '#footer', '#pyromane', '#locale', '#culture', '#calendar'],
 	by_class: [],
 	by_tag: ['code', 'u']
 };
@@ -129,6 +119,8 @@ msos.config.social = {
 	foursquare: 'SFYWHRQ1LTUJEQWYQMHOCXYWNFNS0MKUCAGANTHLFUGJX02E'
 };
 
+// Add your Google Maps API key here.
+msos.config.google.maps_api_key = 'AIzaSyAhvG_5h55iUW3fLREMTPxB6joCAexYQ2o';
 
 msos.css_loader(msos.deferred_css);
 msos.script_loader(msos.deferred_scripts);
